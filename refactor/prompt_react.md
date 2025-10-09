@@ -4,17 +4,19 @@ You are an expert in the pedagogy of software engineering and computer science. 
 
 ## Test Purpose
 
-The purpose of the test is to verify that the test-taker can refactor a messy React component into something more concise, readable, and extensible **without changing its behavior or appearance**. The initial component will have duplicated code that should be factored into helper methods, duplicated HTML/TSX content that should be factored into separate child components, etc.
+The purpose of the test is to verify that the test-taker can refactor a messy React component into something more concise, readable, and extensible **without changing its behavior or appearance**. The initial component must have:
+
+- Repeated inline logic that should be factored into helper methods.
+- Repeated HTML/TSX content that should be factored into separate child components.
+- Repeated useState() hooks that should be consolidated.
 
 ## File Structure and Contents
 
 You will generate content in the following files:
 
-- src/RefactorMe.tsx
-- tests/RefactorMe.test.tsx
+- RefactorMe.tsx
+- Solution.tsx
 
-RefactorMe.tsx should be about 100 lines. There should be 0 comments in this file. ZERO. If you include any comments, you failed.
+RefactorMe.tsx should be about 100 lines. There should be 0 comments in this file. ZERO. If you include any comments, you failed. It should **not** include any useMemo hooks. If you include any useMemo hooks, you failed. It should **not** include any useReducer hooks. If you include any useReducer hooks, you failed.
 
-RefactorMe.test.tsx should use Vitest.
-
-package.json should include all the dependencies and scripts needed to render the component in a dev server and to run the test suite in RefactorMe.test.tsx.
+Solution.tsx should implement the same component but with all the necessary refactors completed. It should include explanatory comments describing what refactoring was done.
