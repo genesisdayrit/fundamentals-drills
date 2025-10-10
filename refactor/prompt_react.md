@@ -19,4 +19,4 @@ You will generate content in the following files:
 
 RefactorMe.tsx should be about 100 lines. There should be 0 comments in this file. ZERO. If you include any comments, you failed. It should **not** include any useMemo hooks. If you include any useMemo hooks, you failed. It should **not** include any useReducer hooks. If you include any useReducer hooks, you failed.
 
-Solution.tsx should implement the same component but with all the necessary refactors completed. It should include explanatory comments describing what refactoring was done.
+Solution.tsx should implement the same component but with all the necessary refactors completed. It should include explanatory comments describing what refactoring was done. If you do not include these explanatory comments, you failed the task.
