@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test-main": "vitest ./tests/main.test.ts",
+    "test-fixme": "vitest ./tests/FixMe.test.tsx"
   },
   "dependencies": {
     "react": "^19.1.1",
