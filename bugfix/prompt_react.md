@@ -12,7 +12,7 @@ You will generate content in the following files:
 
 - src/FixMe.tsx
 - tests/FixMe.test.tsx
-- src/SolutionAI.tsx
+- src/FixMeSolution.tsx
 
 FixMe.tsx should be about 50 lines and contain 3 bugs that the test-taker will fix. There MUST be 0 comments in this file. ZERO. If you include any comments, you failed. If you include the string "// BUG" or any such variations, YOU FAILED THE TASK. It should **not** include any useMemo hooks. If you include any useMemo hooks, you failed. It should **not** include any useReducer hooks. If you include any useReducer hooks, you failed.
 
@@ -26,4 +26,4 @@ afterEach(() => {
 cleanup();
 });
 
-SolutionAI.tsx should implement the same component but with all the bugs fixed such that the test suite passes. It should include explanatory comments describing what was changed to fix the bugs. If you do not include these explanatory comments, you failed the task.
+FixMeSolution.tsx should implement the same component but with all the bugs fixed such that the test suite passes. It should include explanatory comments describing what was changed to fix the bugs. If you do not include these explanatory comments, you failed the task.
