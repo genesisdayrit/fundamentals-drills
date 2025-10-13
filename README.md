@@ -7,22 +7,22 @@ This week is about proving you can perform the core engineering movements withou
 
 ## The Four Drills
 
-### 1. Bug Fix (React) (15 minutes)
+### 1. Bug Fix (TypeScript) (25 minutes)
 
 A small React app with broken behavior or setup. Your task is to diagnose and repair it so that it behaves as intended and all tests pass.
 **Focus:** Debugging, reading unfamiliar code, understanding component state and props.
 
-### 2. Refactor (React) (15 minutes)
+### 2. Refactor (React) (25 minutes)
 
 A functioning React app that’s written poorly—confusing names, repeated logic, messy structure. Your goal is to refactor it without changing its behavior.
 **Focus:** Abstraction, clarity, and improving existing codebases.
 
-### 3. Programming Puzzle (TypeScript) (20 minutes)
+### 3. Programming Puzzle (TypeScript) (25 minutes)
 
 A pair of small problems designed to test your fundamentals with TypeScript and data manipulation.
 **Focus:** Writing small, pure functions and reasoning about data flow.
 
-### 4. System Design (20 minutes)
+### 4. System Design (25 minutes)
 
 A short design exercise modeled after industry design documents. You’ll outline data models, key components, and request flows.
 **Focus:** Thinking in systems, modeling data, and explaining design choices.
@@ -32,7 +32,7 @@ A short design exercise modeled after industry design documents. You’ll outlin
 ## Daily Flow
 
 - Each morning, you’ll receive a new set of variants for all four drills.
-- You’ll have **70 minutes total** to work through them.
+- You’ll have **100 minutes total** to work through them.
 - Submit your work as a pull request for that day’s branch.
 - When you pass a drill emphatically, you no longer need to repeat it on later days.
 - If you don’t pass, train on that area using the provided materials and return to it the next day.
