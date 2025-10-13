@@ -43,27 +43,30 @@ export function summarizeCart(
   let discountTotal = 0;
 
   for (let i = 0; i < items.length; i++) {
-    const it = items[i];
-    const lineBase = it.price * it.qty;
-    const d = it.discount ?? 0;
-    const lineAfterDiscount = lineBase * (1 - d / 100);
-    subtotal += lineBase;
-    discountTotal += lineBase - lineAfterDiscount;
+    const item = items[i];
+    const totalPrice = item.price * item.qty; // Item Price x Quantity of Items = Total Price
+    const d = item.discount ?? 0; // Discount for Item
+    const discount = totalPrice * d; // Discount = Total Price * (0-1)
+    const subTotalForItem = totalPrice - discount; // Total Price - Discount = sub-total
+    subtotal += subTotalForItem;
+    discountTotal += discount;
   }
 
   const taxable = subtotal - discountTotal;
   const tax = taxable * taxRate;
 
-  const shipping = subtotal <= threshold ? 0 : shipFlat;
+  const shipping = subtotal <= threshold ? 50 : shipFlat;
 
   const categories = Array.from(
     new Set(
-      items.map((i) => (i.category && i.category.trim()) || "uncategorized")
+      items.map((i) => i.category && i.category.trim()) // exists and can trim
     )
   );
 
   const working = items;
   working.sort((a, b) => a.name.localeCompare(b.name));
+
+  // didn't get here
 
   const lines: string[] = [];
   for (let i = 0; i < working.length; i++) {
