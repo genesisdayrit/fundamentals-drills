@@ -59,7 +59,7 @@ export function summarizeCart(
 
   const categories = Array.from(
     new Set(
-      items.map((i) => i.category && i.category.trim()) // exists and can trim
+      items.map((i) => (i.category && i.category.trim()) || "uncategorized") // exists and can trim or string
     )
   );
 
