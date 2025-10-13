@@ -1,0 +1,1 @@
+bun test ./bugfix/tests/bugfix.test.ts

@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test-main": "vitest ./tests/main.test.ts",
-    "test-fixme": "vitest ./tests/FixMe.test.tsx"
+    "test-refactor": "vitest ./refactor/tests/RefactorMe.test.tsx"
   },
   "dependencies": {
     "react": "^19.1.1",
