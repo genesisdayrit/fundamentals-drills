@@ -6,7 +6,7 @@ This assignment is defined in a file called `bugfix.ts`. It contains a single fu
 
 ## Definition of "Done"
 
-The code is clean and compiles, and the tests pass.
+The code is clean and compiles, and the tests pass. You can run `bun test` in this directory to run the tests with no dependencies.
 
 ## Study Guide
 
