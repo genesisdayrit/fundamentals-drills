@@ -2,7 +2,7 @@
 
 ## Assignment
 
-This assignment is defined in a file called `bugfun.ts`. It contains a single function written in TypeScript that has several bugs in it. Your job is to fix the bugs in the function such that the tests in `bugfun.test.ts` pass.
+This assignment is defined in a file called `bugfix.ts`. It contains a single function written in TypeScript that has several bugs in it. Your job is to fix the bugs in the function such that the tests in `bugfix.test.ts` pass.
 
 ## Definition of "Done"
 
