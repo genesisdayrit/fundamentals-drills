@@ -139,7 +139,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # Generated solution files for exam
-bugfun_solution.ts
+bugfix_solution.ts
 RefactorMeSolution.tsx
 FixMeSolution.tsx
 
