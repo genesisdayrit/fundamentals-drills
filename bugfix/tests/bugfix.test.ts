@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import summarize from "../src/bugfun";
+import summarize from "../src/bugfix";
 
 describe("summarize (debugging exercise)", () => {
   it("parses numbers and numeric strings, ignores junk", () => {
