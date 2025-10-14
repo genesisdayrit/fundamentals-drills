@@ -1,3 +1,5 @@
+import RefactorMe from '../refactor/src/RefactorMe'
+
 export function App() {
-  return <>Hello World</>;
+  return <RefactorMe></RefactorMe>
 }

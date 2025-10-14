@@ -42,7 +42,7 @@ Do **not** create any other files. Do **not** include explanations outside of th
 
 ## Assignment 1 (“starter”) — Content Requirements
 
-Our goal with this problem is to test basic typescript syntax familiarity and the ability to use all the core functions on objects, maps, sets, numbers, arrays, and strings. It should require 2-4 core operations (grouping, summing, filtering, sorting, if/else, for loop, while, etc) on 1-2 core data structures. Edge cases should be straightforward (empty inputs, boundary conditions) rather than tricky business rules.
+Our goal with this problem is to test basic typescript syntax familiarity and the ability to use all the core functions on objects, maps, sets, numbers, arrays, and strings. It should require 2-4 core operations (grouping, summing, filtering, sorting, if/else, for loop, while, etc) on 1-2 core data structures. Edge cases should be straightforward (empty inputs, boundary conditions) rather than tricky business rules. Do not use regexes.
 
 **Examples**
 These examples give you a sense of the difficulty and level of modeling. They are for abstract inspiration, not for copying. Be creative and create different problem types. Do not build a sales order analyzer, simple calculator, scheduler problem, etc.
