@@ -14,11 +14,11 @@ The purpose of the test is to verify that the test-taker can refactor a messy Re
 
 You will generate content in the following files:
 
-- src/RefactorMe.tsx
-- tests/RefactorMe.test.tsx
-- src/RefactorMeSolution.tsx
+- refactor/src/RefactorMe.tsx
+- refactor/tests/RefactorMe.test.tsx
+- refactor/src/RefactorMeSolution.tsx
 
-RefactorMe.tsx should be about 100 lines. There should be 0 comments in this file. ZERO. If you include any comments, you failed. It should **not** include any useMemo hooks. If you include any useMemo hooks, you failed. It should **not** include any useReducer hooks. If you include any useReducer hooks, you failed.
+RefactorMe.tsx should be about 50 lines. Use `eslint` and/or `prettier` to make sure that you're not going too far over this line count after readability whitespace is added. There should be 0 comments in this file. ZERO. If you include any comments, you failed. It should **not** include any useMemo hooks. If you include any useMemo hooks, you failed. It should **not** include any useReducer hooks. If you include any useReducer hooks, you failed.
 
 RefactorMe.test.tsx is a comprehensive `vitest` test suite that verifies the functionality and appearance of the component. It should initially pass. Once the test-taker refactors the component, the test suite should still pass. Make sure to include the following code at the top of the file:
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
@@ -29,5 +29,7 @@ import RefactorMe from "../src/RefactorMe";
 afterEach(() => {
 cleanup();
 });
+
+Make sure to run `bun run test-refactor` on RefactorMe.test.tsx, and if any of the tests fail, make whatever fixes are needed so the tests pass and the correctness of the component is preserved.
 
 RefactorMeSolution.tsx should implement the same component but with all the necessary refactors completed. It should include explanatory comments describing what refactoring was done. If you do not include these explanatory comments, you failed the task.

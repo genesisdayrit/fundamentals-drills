@@ -1,213 +1,135 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-type Item = { id: string; label: string; price: number };
+type InventoryItem = {
+  name: string;
+  category: "plant" | "herb" | "tree";
+  stock: number;
+};
 
-const ITEMS: Item[] = [
-  { id: "widget", label: "Widget", price: 12.5 },
-  { id: "gadget", label: "Gadget", price: 7.25 },
+const inventory: InventoryItem[] = [
+  { name: "Lavender", category: "herb", stock: 4 },
+  { name: "Mint", category: "herb", stock: 0 },
+  { name: "Chive", category: "herb", stock: 7 },
+  { name: "Fern", category: "plant", stock: 2 },
+  { name: "Succulent", category: "plant", stock: 1 },
+  { name: "Peace Lily", category: "plant", stock: 0 },
+  { name: "Maple", category: "tree", stock: 5 },
+  { name: "Birch", category: "tree", stock: 3 },
+  { name: "Pine", category: "tree", stock: 1 },
 ];
 
 export default function RefactorMe() {
-  const [qtyWidget, setQtyWidget] = useState(0);
-  const [qtyGadget, setQtyGadget] = useState(0);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [agree, setAgree] = useState(false);
-  const [show, setShow] = useState(false);
+  const [plantFilter, setPlantFilter] = useState("");
+  const [herbFilter, setHerbFilter] = useState("");
+  const [treeFilter, setTreeFilter] = useState("");
+  const [highlighted, setHighlighted] = useState("");
 
-  const widgetPrice = ITEMS[0].price;
-  const gadgetPrice = ITEMS[1].price;
-  const subtotal = qtyWidget * widgetPrice + qtyGadget * gadgetPrice;
-  const discountPct = code.trim().toUpperCase() === "SAVE10" ? 0.1 : 0;
-  const discounted = subtotal - subtotal * discountPct;
-  const tax = discounted * 0.08;
-  const total = discounted + tax;
+  const plantMatches = inventory.filter(
+    (item) =>
+      item.category === "plant" &&
+      item.name.toLowerCase().includes(plantFilter.toLowerCase())
+  );
+  const herbMatches = inventory.filter(
+    (item) =>
+      item.category === "herb" &&
+      item.name.toLowerCase().includes(herbFilter.toLowerCase())
+  );
+  const treeMatches = inventory.filter(
+    (item) =>
+      item.category === "tree" &&
+      item.name.toLowerCase().includes(treeFilter.toLowerCase())
+  );
 
-  const fmt = (n: number) => (Math.round(n * 100) / 100).toFixed(2);
-
-  const canCheckout =
-    name.trim().length > 0 && email.trim().length > 0 && agree && total > 0;
+  const plantTitle =
+    highlighted.length > 0 && highlighted === "Plants"
+      ? "Plants (selected)"
+      : "Plants";
+  const herbTitle =
+    highlighted.length > 0 && highlighted === "Herbs"
+      ? "Herbs (selected)"
+      : "Herbs";
+  const treeTitle =
+    highlighted.length > 0 && highlighted === "Trees"
+      ? "Trees (selected)"
+      : "Trees";
 
   return (
-    <div
-      data-testid="cart"
-      style={{
-        maxWidth: 520,
-        margin: "0 auto",
-        border: "1px solid #ddd",
-        borderRadius: 12,
-        padding: 16,
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <h1 style={{ marginTop: 0 }}>Mini Checkout</h1>
-
-      <div style={{ display: "grid", gap: 8 }}>
+    <div>
+      <section>
+        <h2>{plantTitle}</h2>
         <label>
-          Name
+          Filter plants
           <input
-            data-testid="name-input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Type your name"
-            id="name"
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            value={plantFilter}
+            onChange={(event) => setPlantFilter(event.target.value)}
           />
         </label>
+        <button onClick={() => setHighlighted("Plants")}>Highlight</button>
+        <ul>
+          {plantMatches.map((item) => (
+            <li key={item.name}>
+              <span>{item.name}</span>
+              <span>
+                {item.stock === 0
+                  ? "Sold out"
+                  : item.stock === 1
+                  ? "Only 1 left"
+                  : `${item.stock} available`}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h2>{herbTitle}</h2>
         <label>
-          Email
+          Filter herbs
           <input
-            data-testid="email-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Type your email"
-            id="email"
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            value={herbFilter}
+            onChange={(event) => setHerbFilter(event.target.value)}
           />
         </label>
-      </div>
-
-      <div
-        style={{
-          marginTop: 16,
-          borderTop: "1px solid #eee",
-          paddingTop: 12,
-          display: "grid",
-          gap: 10,
-        }}
-      >
-        <div
-          data-testid="row-widget"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto auto auto",
-            gap: 8,
-            alignItems: "center",
-          }}
-        >
-          <div>{ITEMS[0].label}</div>
-          <div>${fmt(widgetPrice)}</div>
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <button
-              aria-label="decrement-widget"
-              onClick={() => setQtyWidget((q) => (q - 1 < 0 ? 0 : q - 1))}
-            >
-              -
-            </button>
-            <span data-testid="qty-widget">{qtyWidget}</span>
-            <button
-              aria-label="increment-widget"
-              onClick={() => setQtyWidget((q) => q + 1)}
-            >
-              +
-            </button>
-          </div>
-          <div data-testid="line-widget">${fmt(qtyWidget * widgetPrice)}</div>
-        </div>
-
-        <div
-          data-testid="row-gadget"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto auto auto",
-            gap: 8,
-            alignItems: "center",
-          }}
-        >
-          <div>{ITEMS[1].label}</div>
-          <div>${fmt(gadgetPrice)}</div>
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <button
-              aria-label="decrement-gadget"
-              onClick={() => setQtyGadget((q) => (q - 1 < 0 ? 0 : q - 1))}
-            >
-              -
-            </button>
-            <span data-testid="qty-gadget">{qtyGadget}</span>
-            <button
-              aria-label="increment-gadget"
-              onClick={() => setQtyGadget((q) => q + 1)}
-            >
-              +
-            </button>
-          </div>
-          <div data-testid="line-gadget">${fmt(qtyGadget * gadgetPrice)}</div>
-        </div>
-      </div>
-
-      <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
+        <button onClick={() => setHighlighted("Herbs")}>Highlight</button>
+        <ul>
+          {herbMatches.map((item) => (
+            <li key={item.name}>
+              <span>{item.name}</span>
+              <span>
+                {item.stock === 0
+                  ? "Sold out"
+                  : item.stock === 1
+                  ? "Only 1 left"
+                  : `${item.stock} available`}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h2>{treeTitle}</h2>
         <label>
-          Discount Code
+          Filter trees
           <input
-            data-testid="code-input"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="SAVE10"
-            id="code"
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            value={treeFilter}
+            onChange={(event) => setTreeFilter(event.target.value)}
           />
         </label>
-        <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <input
-            data-testid="agree"
-            type="checkbox"
-            checked={agree}
-            onChange={(e) => setAgree(e.target.checked)}
-          />
-          I agree to the terms
-        </label>
-      </div>
-
-      <div
-        style={{
-          marginTop: 12,
-          borderTop: "1px dashed #ddd",
-          paddingTop: 12,
-          display: "grid",
-          gap: 6,
-        }}
-      >
-        <div data-testid="subtotal">Subtotal: ${fmt(subtotal)}</div>
-        <div data-testid="discount">
-          Discount: -${fmt(subtotal * discountPct)}
-        </div>
-        <div data-testid="tax">Tax (8%): ${fmt(tax)}</div>
-        <div data-testid="total" style={{ fontWeight: 700 }}>
-          Total: ${fmt(total)}
-        </div>
-      </div>
-
-      <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-        <button data-testid="toggle-summary" onClick={() => setShow((s) => !s)}>
-          {show ? "Hide" : "Show"} Summary
-        </button>
-        <button
-          data-testid="checkout"
-          disabled={!canCheckout}
-          onClick={() => alert("Checked out")}
-        >
-          Checkout
-        </button>
-      </div>
-
-      {show && (
-        <div
-          data-testid="summary"
-          style={{
-            marginTop: 12,
-            background: "#fafafa",
-            border: "1px solid #eee",
-            padding: 12,
-            borderRadius: 8,
-          }}
-        >
-          <div>{name}</div>
-          <div>{email}</div>
-          <div>Items: {qtyWidget + qtyGadget}</div>
-          <div>Due: ${fmt(total)}</div>
-        </div>
-      )}
+        <button onClick={() => setHighlighted("Trees")}>Highlight</button>
+        <ul>
+          {treeMatches.map((item) => (
+            <li key={item.name}>
+              <span>{item.name}</span>
+              <span>
+                {item.stock === 0
+                  ? "Sold out"
+                  : item.stock === 1
+                  ? "Only 1 left"
+                  : `${item.stock} available`}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
