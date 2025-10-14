@@ -9,9 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test-bugfix": "vitest ./bugfix/tests/bugfix.test.ts",
-    "test-assignment1": "vitest ./puzzles/tests/assignment1.test.ts",
-    "test-assignment2": "vitest ./puzzles/tests/assignment2.test.ts",
+    "test-bugfix": "bun test ./bugfix/tests/bugfix.test.ts",
+    "test-assignment1": "bun test ./puzzles/tests/assignment1.test.ts",
+    "test-assignment2": "bun test ./puzzles/tests/assignment2.test.ts",
     "test-refactor": "vitest ./refactor/tests/RefactorMe.test.tsx"
   },
   "dependencies": {
