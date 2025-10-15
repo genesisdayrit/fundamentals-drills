@@ -1,116 +1,159 @@
 # Objective
 
-Design a minimal Etsy shop with the following features:
- - Storefront displaying all products on sale
- - Ability to buy products (no need to build payments integation for this exercise; just remove the item from the database when "bought")
- - Store admin can manually add more products
+Design a restaurant table reservation system with the following features:
+ - Ability to view available tables for a given date/time
+ - Ability to make a reservation
+ - Admin can add/remove tables and view all reservations
+
+---
 
 ## 1. Core User Flows
-For each flow, describe what happens end-to-end with bullet points. For the Twitter question, this might be:
 
-Ability to view a product in the Storefront
-- User views products listed for that particular storefront
-- Homepage contains basic information: Product Image, Pricing, Quantity Available
-- Clicks on a single product, and gets directed to its specific product listing page.
-
-
-Ability to View Product Listing and add to cart from Multiple Listings
-- View each product page with its description, title, and quantity available.
-- User shall add desired quantity into their shopping cart.
-- User shall be able to click checkout, or go to another product page and add that to checkout.
-
-Ability to Checkout
-- User shall be able to click on checkout from any product page.
-- User shall be able to see all their items and their quantity during the checkout stage.
-- Before checking out, user shall be prompted to log in (if not done so already), authenticated wiht Better Auth.
-- Upon succesfully checking out, the product's available quantity will automatically decrement based on the customer's order.
-
-Ability for Administrator to Add New Products
-- Admin will have special privilleges
-- Ability for Store Administrator to manually add new products and specify their quantity before listing.
-- Authenticate with BetterAuth and use isAdmin flag to check for Admin role.
+#### View Available Tables
+- as a user, I can go to the site and can view available tables for the restaurant, so that I can see my options for reserving a table.
+- a user should be able to click into a date that they are interested in and select times that they are interested in
+- user goes to the website and sees the table availability based on the time that they are searching for
 
 
-
- ## 2. Data models
-Products
- - ProductID: UUID
- - Name : String
- - Description : String
- - Quantity_Available: Number
-
-Customers
- - ID: UUID
- - Name: String
- - Email: String
- - Address: String
-
-Order 
- - OrderID : UUID
- - CustomerID : UUID (FK)
- - Address : String
- - Subtotal : Number
- - Total : Number
- - Shipping : Number
- - Tax : Number
-
- Product_Order Bridge Table
- - ProductID: FK
- - OrderID: FK
- - Quantity
+#### Make a reservation
+- as a user, I should be able to see on an available table and make a reservation, so that I can reserve a table. 
+- after selecting a time and available table, a user will be able to see a UI that reserves the table
 
 
-
-1) ADD NEW Products:
-UPDATE Products
-SET Name = ... , Description = ..., Quantity_Available = ...
-
-2) New Orders:
-UPDATE Order
-SET Order_ID = .... , CustomerID = ... 
-
-UPDATE Product_Order
-SET ProductID = ... , OrderID = ..., Quantity = ... 
+#### Admin add or review tables
+- as an admin, I can add or review tables to the available tables view, so that potential guests know what tables are available. 
+- an admin should be able to click add a table to add a table or click into an existing table to update table details
 
 
-3) Add New Customer (during Login)
-UPDATE Customers
-SET Name = ..., Email = ... , Address = ....
+## 2. Data Models
+
+users
+- id
+- name
+- email
+- role
+- created_at
+- update_at
+
+tables
+- id
+- name
+- description
+- number_of_seats
+- restaurant_section?
+- restaurant_location?
+- created_by_user_id
+- created_at
+- updated_at
+
+bookings
+- id
+- table_id
+- booked_by_user_id
+- reservation_time_start
+- reservation_time_end
+- reservation_duration
+- is_active
+- created_at
+- approved_at?
+- cancelled_at?
+
+available_times (table of 30 increment times in a day)
+- id
+- date
+- day_of_week
+- start_time (30 min increments)
+- end_time (30 min + start_time for each record)
+- is_holiday
+- is_during_store_hours
 
 
-4) View all Products
-SELECT * FROM Products
+Questions to answer?
+1. How do I see all of the tables?
 
-5) View specific Products
-SELECT * FROM Products WHERE ProductID = .....
+viewing all tables
+`select * from tables`
+
+see bookings for the table
+
+`select from bookings where table_id = ${userInputTableId} order by reservation_start_time`
 
 
+2. How do I see the availablity for a specific table?
+
+
+3. How do I see the availability for a specific time range?
+
+(this is a rough attempt at the SQL - possibly a better way without having a available_times schedule)
+```
+with 
+
+tables as (select * from tables),
+
+booked_tables as (
+    select 
+    * 
+    from 
+        bookings 
+    where 
+        reservation_start_time >= {userStartTimeRange} 
+        and reservation_end_time <= {userEndTimeRange}
+),
+
+available_times as (
+    select * from available_times
+)
+
+select 
+distinct {tables and table info}
+from tables
+cross join available times
+left join booked_times
+    -- check overlap of booked times and available times
+    on (available_times.start_time >= booked_tables.start_time
+        and available_times.start_time <= booked_tables.end_time)
+    and (available_times.end_time >= booked_tables.start_time
+        and available_times.end_time <= booked_tables.end_time)
+-- only return tables available
+where
+    booked_times.start_time is null
+    and booked_times.end_time is null
+    and is_during_store_hours = true
+    and is_holiday = false
+order by table_name, available_start_time
+```
+
+4. How do I add a table as an admin?
+- `insert into tables`
 
 ## 3. Architecture Diagram
-Attach a simple boxes-and-arrows diagram showing client, API server, and database. Label arrows with the main requests (e.g., "POST /follow", "GET /timeline"). Keep it legible and minimal.
 
-[Vite | Express / React Router Framework Mode] => On the same port
 
-React Router calls Database through Drizzle's ORM 
+
 ## 4. API Sketch
-List the minimal endpoints and their request/response shapes at a high level. Keep this terse.
 
-For twitter:
-- `POST /follow`
-- `POST /posts`
-- `GET /timeline`
+- GET /tables
+**Input**: none
+**Output**: Table
 
-State what each returns on success and what errors matter in V1.
+-  GET /bookings/:tableId
 
-GET /Products
+**Input**: tableId, userId
+**Output**: Booking
 
-GET /Products/P_ID
+- POST /booking/:tableId/create
 
-POST /Products/
-Body: Name, Description, Quantity Available
+**Input**: tableId, userId
+**Output**: Booking
 
-Delete /Products/P_ID
+- POST /availabe-tables
+**Input**: userStartRangeTime, userEndRangeTime
+**Output**: Table[] (array of available table objects)
 
-POST /Order/C_ID
-C_ID: CustomerID
-Body: An array of the ProductID and Quantities
+- POST /tables/:id/create
+**Input**: Table, userId
+**Output**: Table
+
+- GET /user-bookings
+**Input**: userId
+**Output**: Bookings
