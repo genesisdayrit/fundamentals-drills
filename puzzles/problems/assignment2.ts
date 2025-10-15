@@ -47,7 +47,103 @@
  * - Multiple cars with same ID: only the first occurrence is considered
  */
 
-export function parkingGarageExit(garage, carToExit) {
-  // TODO: Implement this function
-  throw new Error("Not implemented");
+
+/* problem intution
+
+single lane parking garage, so there is a car order
+only the front can move out, so front needs to be represented by the first index or last index
+
+need to determine which cars need to temporarily move out
+
+after the target car leaves, the cars return to the garage in the order that they left
+
+input is garage array of cars and carToExit which is the target
+
+solution components
+
+need to add cars back in to the front of the array not push to back
+need to check if the car is in the garage
+need to id the position of the target car to move
+if the index of the target car to move is not 0, you need to id the cars that need to be moved out
+
+create a new array of carsToTemporarily move, in order from first car until index of the carToMove
+unshift the cars back to the front
+probably can use shift to get the cars out up until the index length
+
+*/
+
+type Garage = string[]
+type CarToExit = string
+type CanExit = boolean | undefined
+type CarsToMove = string[]
+type FinalGarage = string[]
+
+type Result = {
+  canExit: CanExit
+  carsToMove?: CarsToMove
+  finalGarage?: FinalGarage
 }
+
+export function parkingGarageExit(garage, carToExit) {
+  
+  let result: Result = {
+    canExit: undefined,
+    // carsToMove: [],
+    // finalGarage: garage
+  }
+
+
+  // find the index of the target car
+  let targetCarIndex = garage.findIndex((car) => car === carToExit)
+  console.log('targetCarIndex:', targetCarIndex)
+
+  // if the car doesn't exist
+  if (targetCarIndex === -1) {
+    console.log('Car does not exist in garage')
+    result = {
+      canExit: false
+    }
+  }
+
+  // if targetCarIndex is index 0
+  if (targetCarIndex === 0) {
+    let finalGarage = garage.shift()  
+    result = {
+      canExit: true,
+      carsToMove: [],
+      finalGarage: garage,
+    }
+  }
+
+  if (targetCarIndex > 0) {
+    // slice the cars up until the index position
+    let tempGarage = garage
+    let carsToMove = tempGarage.slice(0, targetCarIndex)
+    console.log('cars moved out:', carsToMove)
+    let carsToMoveReversed = structuredClone(carsToMove).reverse()
+
+    // take the cars out including target car
+    let targetCarRemoved = tempGarage.splice(0, targetCarIndex+1)
+    
+    // let tempGarage = garage.shift(targetCarIndex)
+    console.log('temp garage:', tempGarage)
+    console.log('cars back in reverse:', carsToMove)
+
+    // add the cars back into the garage after removing the target car
+
+    let finalGarage = [...tempGarage, ...carsToMoveReversed]
+    console.log('final garage:', finalGarage)
+
+    // let finalGarage = tempGarage.unshift(carsToMove)
+    // console.log('final garage:', finalGarage)
+
+    result = {
+      canExit: true, 
+      carsToMove: carsToMove,
+      finalGarage: finalGarage
+    }
+
+  }
+  console.log('result:', result)
+  return result
+} 
