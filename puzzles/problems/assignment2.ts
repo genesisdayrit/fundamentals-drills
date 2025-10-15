@@ -84,7 +84,7 @@ type Result = {
   finalGarage?: FinalGarage
 }
 
-export function parkingGarageExit(garage, carToExit) {
+export function parkingGarageExit(garage: string[], carToExit: string): Result {
   
   let result: Result = {
     canExit: undefined,
