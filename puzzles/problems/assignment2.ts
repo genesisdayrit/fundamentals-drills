@@ -1,60 +1,53 @@
-// @ts-nocheck
-/**
- * Programming Puzzle — Vending Sessions
- *
- * You will implement a tiny vending machine that processes a list of user sessions.
- * Each session is a sequence of actions: inserting coins, selecting an item, or cancelling.
- * There is NO persistent coin bank: change is conceptual and unlimited; only inventory changes over time.
- * Sessions are independent except for inventory stock, which is shared and persists across sessions.
- *
- * Input:
- *   {
- *     inventory: { [sku: string]: { price: number; stock: number } } // price in whole cents (>=0), stock>=0
- *     sessions: Array<Session>                                        // Session = Action[]
- *   }
- *   Action is one of:
- *     ["insert", number]     // coin must be one of the allowed denominations [100,50,25,10,5,1]
- *     ["select", string]     // attempt to buy sku
- *     ["cancel"]             // abort session & refund inserted coins
- *     ["noop"]               // does nothing
- *
+/*
+ * Parking Garage Exit Validator
+ * 
+ * You are managing a single-lane parking garage where cars park in a line.
+ * Cars can only exit from the front of the garage. When a car wants to leave,
+ * you need to determine if it can exit, and if so, which cars must temporarily
+ * move out of the way.
+ * 
+ * The garage has a temporary holding area where cars can wait while others exit.
+ * 
+ * Rules:
+ * 1. Cars are parked in order from front (index 0) to back
+ * 2. Only the front car can exit directly
+ * 3. To get a car out from position N, all cars in positions 0 to N-1 must
+ *    temporarily move to the holding area
+ * 4. After the target car exits, the cars from holding return in reverse order
+ *    (last out, first back in)
+ * 
+ * Input: 
+ *   - garage: array of car IDs (strings) from front to back
+ *   - carToExit: the ID of the car that wants to leave
+ * 
  * Output:
- *   {
- *     inventory: { ...updated inventory... },
- *     receipts: Array<{
- *       dispensed?: string;                        // sku if an item was dispensed
- *       changeCoins: { [denom: number]: number };  // change returned as a greedy breakdown in the allowed denominations
- *       changeTotal: number;                        // total change (cents)
- *       spent: number;                              // cents the machine kept this session
- *       errors: string[];                           // rule violations or unsupported ops
- *     }>
- *   }
- *
- * Rules & Notes:
- *   - Start each session with credit=0 and an empty "inserted" coin pouch.
- *   - "insert" adds to the session credit if the coin is in the allowed denominations; otherwise record an error and ignore it.
- *   - "select":
- *       * Fails if sku is invalid, out of stock, or credit < price (record an error; session continues).
- *       * On success: dispense the item, decrement inventory, keep exactly the price as spent, return change = credit - price
- *         using greedy breakdown (unlimited coins; no bank constraints), then the session ENDS (ignore further actions).
- *   - "cancel" refunds exactly the coins the user inserted this session (returned as a breakdown; session ENDS).
- *   - If a session ends without "select" success or "cancel", nothing is dispensed or refunded; it's just an idle session end.
- *   - Deterministic; integers only; no randomness or timing.
- *
+ *   - If the car is not in the garage, return { canExit: false }
+ *   - If the car can exit, return:
+ *     {
+ *       canExit: true,
+ *       carsToMove: array of car IDs that must move (in order they move out),
+ *       finalGarage: array of car IDs remaining after exit (in final order)
+ *     }
+ * 
  * Examples:
- *   Example A:
- *     inv={A:{price:125,stock:1}}, sessions=[
- *       [ ["insert",100],["insert",25],["select","A"] ]
- *     ]
- *     => dispensed A, spent 125, change 0, inventory A.stock=0
- *
- *   Example B:
- *     inv={B:{price:130,stock:1}}, sessions=[
- *       [ ["insert",100],["insert",25],["select","B"] ], // insufficient: error, session continues
- *       [ ["insert",100],["select","B"] ]                // success with change 70 = 50+10+10
- *     ]
+ * 
+ * garage = ["A", "B", "C"], carToExit = "A"
+ * → { canExit: true, carsToMove: [], finalGarage: ["B", "C"] }
+ * 
+ * garage = ["A", "B", "C"], carToExit = "C"
+ * → { canExit: true, carsToMove: ["A", "B"], finalGarage: ["B", "A"] }
+ * 
+ * garage = ["A", "B", "C"], carToExit = "D"
+ * → { canExit: false }
+ * 
+ * Edge cases:
+ * - Empty garage: car cannot exit
+ * - Car not in garage: cannot exit
+ * - Single car in garage: can exit directly with no moves
+ * - Multiple cars with same ID: only the first occurrence is considered
  */
 
-export function processVendingSessions(input) {
-  return {}
+export function parkingGarageExit(garage, carToExit) {
+  // TODO: Implement this function
+  throw new Error("Not implemented");
 }
