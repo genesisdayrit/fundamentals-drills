@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parkingGarageExit } from "../problems/assignment2";
+import { parkingGarageExit } from "../problems/2025-10-15-single-lane-garage";
 
 describe("parkingGarageExit", () => {
   it("returns canExit false when garage is empty", () => {
