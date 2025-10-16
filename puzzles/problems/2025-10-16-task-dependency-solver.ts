@@ -118,6 +118,19 @@ export function calculateCompletionTime(tasks: any): any {
   // to keep track of dependency chains. array of objects and duration
   let finalDependencyChains:FinalDependencyChains = []
 
+
+  // helper function to pass task with no dependencies
+  // pass in a task and push its task name and duration
+
+  // function handleNoDependency(task) {
+  //   // find the task in the tasks object
+  //   for (const [taskKey, taskObject] of Object.entries(tasks)) {
+  //     console.log('taskKey:', taskKey)
+  //     console.log('object:', taskObject)cl
+  //     let taskDependencies = taskObject.dependencies
+  //     console.log(`task dependencies for ${taskKey}: ${taskDependencies}`)
+  // }
+
   
   // for each task (key value pair), in the tasksObject
   for (const [taskKey, taskObject] of Object.entries(tasks)) {
@@ -133,7 +146,12 @@ export function calculateCompletionTime(tasks: any): any {
       finalDependencyChains.push({task: taskKey, duration: duration})
       console.log('final dependency chain:', finalDependencyChains)
     }
-    // if there are dependencies, determine the task run order
+
+    // if the task has dependencies, need to check the dependency if it already exists in findalDependencyChains
+    // check if taskDependency in findalDependencyChains, if not, then push that to a finalDependencyChains
+    // check if taskDependency is in findalDependencyChains, if so, then add the current task after that dependency
+
+   
   }
 
 
