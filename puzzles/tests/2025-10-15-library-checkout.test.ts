@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getCurrentlyCheckedOut } from "../problems/assignment1";
+import { getCurrentlyCheckedOut } from "../problems/2025-10-15-library-checkout";
 
 describe("getCurrentlyCheckedOut", () => {
   it("returns empty array when no events", () => {
