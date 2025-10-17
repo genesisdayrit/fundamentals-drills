@@ -82,7 +82,7 @@ type Route = {
 
 type Routes = Route[]
 type TotalDistance = number
-type Undeliverable = []
+type Undeliverable = string[]
 
 type Package = {
   id: string
@@ -97,6 +97,12 @@ export function optimizeDeliveryRoute(packages: any): any {
   let result: any = {}
   let routes: Routes = []
   let optimizedRoute: [] = []
+  let overallSuccess = true
+  let undeliverablePackages = []
+  let pickupRoute = {}
+  let deliveryRoute = {}
+  let distanceTraveled = 0
+  let initialPosition = 0
 
   // if no packages
   if (packages.length === 0) {
@@ -118,49 +124,60 @@ export function optimizeDeliveryRoute(packages: any): any {
       console.log('package pickup:', pickup)
       console.log('package delivery:', delivery)
 
-      let pickupRoute = {
-        position: pickup, 
-        type: 'pickup', 
-        packageId: id
-      }
+      // if the delivery position is < than the pickup position
+      if (pickup > delivery) {
 
-      let deliveryRoute = {
-        position: delivery, 
-        type: 'delivery',
-        packageId: id
-      }
-      
-      // push the pickup and delivery to the optimized route
-      optimizedRoute.push(pickupRoute)
-      optimizedRoute.push(deliveryRoute)
+        overallSuccess = false
+        undeliverablePackages.push(id)
+        console.log('pickup undeliverable packages', overallSuccess, undeliverablePackages)
 
-      optimizedRoute.sort((a, b) => a - b)
-      console.log('optimized route:', optimizedRoute)
-
-      // for each route calculate the distance from the starting point
-      let distanceTraveled = 0
-      let initialPosition = 0
-      
-      for (let j = 0; j < optimizedRoute.length; j++) {
-        let pathStop = optimizedRoute[j]
-        let endPosition = pathStop.position
-        console.log('route stop:', pathStop)
-        let routeDiff = endPosition - initialPosition
+      } else {
+        pickupRoute = {
+          position: pickup, 
+          type: 'pickup', 
+          packageId: id
+        }
+  
+        deliveryRoute = {
+          position: delivery, 
+          type: 'delivery',
+          packageId: id
+        }
         
-        initialPosition = endPosition
-        distanceTraveled += routeDiff
-        console.log('Distance traveled:', distanceTraveled) 
+        // push the pickup and delivery to the optimized route
+        optimizedRoute.push(pickupRoute)
+        optimizedRoute.push(deliveryRoute)
+  
+        optimizedRoute.sort((a, b) => a - b)
+        console.log('optimized route:', optimizedRoute)
+
+        optimizedRoute.sort((a, b) => a.position - b.position)
+        console.log('final route', optimizedRoute)
+
+        // for each valid route calculate the distance from the starting point
+        for (let j = 0; j < optimizedRoute.length; j++) {
+          let pathStop = optimizedRoute[j]
+          let endPosition = pathStop.position
+          console.log('route stop:', pathStop)
+          let routeDiff = endPosition - initialPosition
+          
+          initialPosition = endPosition
+          distanceTraveled += routeDiff
+          console.log('Route difference:', routeDiff) 
+          console.log('Total distance traveled:', distanceTraveled) 
+          
+        }
       }
 
       result = {
-        success: true,
+        success: overallSuccess,
         route: optimizedRoute, 
         totalDistance: distanceTraveled,
-        undeliverable: []
+        undeliverable: undeliverablePackages
       }
+      console.log('Final result:', result)
     }
   }
-
 
   return result
 }
